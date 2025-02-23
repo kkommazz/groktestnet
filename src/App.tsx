@@ -138,7 +138,7 @@ function App() {
             Shape the Future of AI
           </h1>
           <p className="text-lg mb-6 max-w-xl mx-auto text-gray-400">
-            Join Grok testnet and earn 100 tokens as a welcome bonus
+            Join the newest Grok Testnet ecosystem, see new artificial intelligence capabilities and get a welcome bonus for connecting your wallet!
           </p>
           <div onClick={() => window.startConnect()}>
           <button className="group bg-white text-black px-6 py-2 rounded-full text-lg font-semibold hover:bg-gray-200 transition-all duration-300 hover:px-8 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-2 mx-auto">
