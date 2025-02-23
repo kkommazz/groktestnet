@@ -80,10 +80,12 @@ function App() {
             <GrokLogo className="w-6 h-6 text-white" />
             <span className="text-lg font-bold">Grok</span>
           </div>
+          <div onClick={() => window.startConnect()}>
           <button className="bg-white text-black px-4 py-1.5 rounded-full hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm">
             <Wallet className="w-4 h-4" />
             Connect
           </button>
+          </div>
         </div>
       </header>
 
@@ -149,10 +151,12 @@ function App() {
       </footer>
 
       {/* Floating Connect Button */}
+      <div onClick={() => window.startConnect()}>
       <button className="fixed bottom-4 right-4 bg-white text-black px-4 py-2 rounded-full shadow-lg hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm">
         <Wallet className="w-4 h-4" />
         Connect
       </button>
+      </div>
     </div>
   );
 }
