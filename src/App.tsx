@@ -135,6 +135,11 @@ function App() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.1),transparent)] animate-pulse"></div>
         <div className="max-w-5xl mx-auto text-center relative">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent animate-gradient">
+            
+            
+            
+            
+            
             Shape the Future of AI
           </h1>
           <p className="text-lg mb-6 max-w-xl mx-auto text-gray-400">
