@@ -157,7 +157,7 @@ function App() {
       {/* Benefits Section */}
       <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-8">Why Join?</h2>
+          <h2 className="text-2xl font-bold text-center mb-8">Why you should be a part of Grok Testnet</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {benefits.map((benefit, index) => (
               <div 
