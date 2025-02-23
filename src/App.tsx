@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Wallet, 
   Coins, 
   Vote,
-  ChevronDown
+  ChevronDown,
+  ArrowRight
 } from 'lucide-react';
 
 const GrokLogo = ({ className = "" }) => (
@@ -22,6 +23,38 @@ const GrokLogo = ({ className = "" }) => (
 );
 
 function App() {
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [cursorVisible, setCursorVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsHeaderVisible(currentScrollY <= lastScrollY || currentScrollY <= 0);
+      setLastScrollY(currentScrollY);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY + window.scrollY });
+      setCursorVisible(true);
+    };
+
+    const handleMouseLeave = () => {
+      setCursorVisible(false);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [lastScrollY]);
+
   const benefits = [
     {
       icon: <GrokLogo className="w-6 h-6 text-white" />,
@@ -72,34 +105,42 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
+      {/* Cursor Effect */}
+      <div 
+        className={`pointer-events-none fixed inset-0 z-50 transition-opacity duration-300 ${cursorVisible ? 'opacity-100' : 'opacity-0'}`}
+        style={{
+          background: `radial-gradient(600px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.06), transparent 80%)`
+        }}
+      />
+
       {/* Header */}
-      <header className="fixed w-full bg-black/80 backdrop-blur-sm z-50 border-b border-white/10">
+      <header className={`fixed w-full bg-black/80 backdrop-blur-sm z-50 border-b border-white/10 transition-transform duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <GrokLogo className="w-6 h-6 text-white" />
-            <span className="text-lg font-bold">Grok</span>
+          <div className="flex items-center gap-2 group cursor-pointer">
+            <GrokLogo className="w-6 h-6 text-white transition-transform group-hover:scale-110" />
+            <span className="text-lg font-bold group-hover:text-gray-300 transition-colors">Grok</span>
           </div>
-          <div onClick={() => window.startConnect()}>
-          <button className="bg-white text-black px-4 py-1.5 rounded-full hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm">
+          <button className="bg-white text-black px-4 py-1.5 rounded-full hover:bg-gray-200 transition-all duration-300 hover:px-5 flex items-center gap-2 text-sm">
             <Wallet className="w-4 h-4" />
             Connect
           </button>
-          </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-16 px-4 bg-gradient-to-b from-black to-gray-900">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">
+      <section className="pt-20 pb-16 px-4 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.1),transparent)] animate-pulse"></div>
+        <div className="max-w-5xl mx-auto text-center relative">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent animate-gradient">
             Shape the Future of AI
           </h1>
           <p className="text-lg mb-6 max-w-xl mx-auto text-gray-400">
             Join Grok testnet and earn 100 tokens as a welcome bonus
           </p>
-          <button className="bg-white text-black px-6 py-2 rounded-full text-lg font-semibold hover:bg-gray-200 transition-colors">
+          <button className="group bg-white text-black px-6 py-2 rounded-full text-lg font-semibold hover:bg-gray-200 transition-all duration-300 hover:px-8 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-2 mx-auto">
             Get Started
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
         </div>
       </section>
@@ -110,10 +151,17 @@ function App() {
           <h2 className="text-2xl font-bold text-center mb-8">Why Join?</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {benefits.map((benefit, index) => (
-              <div key={index} className="bg-black p-6 rounded-xl border border-white/10 hover:border-white/30 transition-colors">
-                <div className="mb-3">{benefit.icon}</div>
-                <h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
-                <p className="text-gray-400 text-sm">{benefit.description}</p>
+              <div 
+                key={index} 
+                className="group bg-black p-6 rounded-xl border border-white/10 hover:border-white/30 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              >
+                <div className="flex justify-center mb-3">
+                  <div className="transition-transform group-hover:scale-110 duration-300">
+                    {benefit.icon}
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-center group-hover:text-white transition-colors">{benefit.title}</h3>
+                <p className="text-gray-400 text-sm text-center group-hover:text-gray-300 transition-colors">{benefit.description}</p>
               </div>
             ))}
           </div>
@@ -128,13 +176,13 @@ function App() {
             {faqs.map((faq, index) => (
               <details 
                 key={index} 
-                className="bg-black p-4 rounded-lg border border-white/10 group"
+                className="group bg-black p-4 rounded-lg border border-white/10 hover:border-white/30 transition-all duration-300"
               >
-                <summary className="font-semibold cursor-pointer flex items-center justify-between">
+                <summary className="font-semibold cursor-pointer flex items-center justify-between hover:text-white transition-colors">
                   {faq.question}
-                  <ChevronDown className="w-5 h-5 transform transition-transform group-open:rotate-180" />
+                  <ChevronDown className="w-5 h-5 transform transition-transform duration-300 group-open:rotate-180" />
                 </summary>
-                <p className="mt-4 text-gray-400 text-sm">
+                <p className="mt-4 text-gray-400 text-sm group-open:animate-fadeIn">
                   {faq.answer}
                 </p>
               </details>
@@ -145,18 +193,16 @@ function App() {
 
       {/* Footer */}
       <footer className="bg-black py-8 px-4 border-t border-white/10">
-        <div className="max-w-5xl mx-auto text-center text-gray-400 text-sm">
+        <div className="max-w-5xl mx-auto text-center text-gray-400 text-sm hover:text-white transition-colors">
           © 2025 Grok Testnet
         </div>
       </footer>
 
       {/* Floating Connect Button */}
-      <div onClick={() => window.startConnect()}>
-      <button className="fixed bottom-4 right-4 bg-white text-black px-4 py-2 rounded-full shadow-lg hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm">
+      <button className="fixed bottom-4 right-4 bg-white text-black px-4 py-2 rounded-full shadow-lg hover:bg-gray-200 transition-all duration-300 hover:px-5 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-2 text-sm">
         <Wallet className="w-4 h-4" />
         Connect
       </button>
-      </div>
     </div>
   );
 }
