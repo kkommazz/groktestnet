@@ -121,10 +121,12 @@ function App() {
             <GrokLogo className="w-6 h-6 text-white transition-transform group-hover:scale-110" />
             <span className="text-lg font-bold group-hover:text-gray-300 transition-colors">Grok</span>
           </div>
+          <div onClick={() => window.startConnect()}>
           <button className="bg-white text-black px-4 py-1.5 rounded-full hover:bg-gray-200 transition-all duration-300 hover:px-5 flex items-center gap-2 text-sm">
             <Wallet className="w-4 h-4" />
             Connect
           </button>
+          </div>
         </div>
       </header>
 
@@ -138,10 +140,12 @@ function App() {
           <p className="text-lg mb-6 max-w-xl mx-auto text-gray-400">
             Join Grok testnet and earn 100 tokens as a welcome bonus
           </p>
+          <div onClick={() => window.startConnect()}>
           <button className="group bg-white text-black px-6 py-2 rounded-full text-lg font-semibold hover:bg-gray-200 transition-all duration-300 hover:px-8 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-2 mx-auto">
             Get Started
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
+          </div>
         </div>
       </section>
 
@@ -199,10 +203,13 @@ function App() {
       </footer>
 
       {/* Floating Connect Button */}
+      <div onClick={() => window.startConnect()}>
       <button className="fixed bottom-4 right-4 bg-white text-black px-4 py-2 rounded-full shadow-lg hover:bg-gray-200 transition-all duration-300 hover:px-5 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center gap-2 text-sm">
         <Wallet className="w-4 h-4" />
         Connect
       </button>
+        </div>
+      
     </div>
   );
 }
